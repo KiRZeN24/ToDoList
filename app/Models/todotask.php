@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class todotask extends Model
+class Todotask extends Model
 {
     use HasFactory;
     protected $filleable= [

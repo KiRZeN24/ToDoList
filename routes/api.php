@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\v1\UserController as UserV1;
+use App\Http\Controllers\api\v1\ToDoTaskController as todotaskV1;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('v1/users', UserV1::class)->only(['index']);
+
+Route::apiResource('v1/todotask', todotaskV1::class)->only(['index']);
