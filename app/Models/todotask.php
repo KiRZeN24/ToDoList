@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Todotask extends Model
 {
     use HasFactory;
-    protected $filleable= [
+    protected $fillable= [
         'texto',
         'status',
         'user_id',

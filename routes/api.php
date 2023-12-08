@@ -22,4 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('v1/users', UserV1::class)->only(['index']);
 
-Route::apiResource('v1/todotask', todotaskV1::class)->only(['index','show']);
+Route::apiResource('v1/todotask', todotaskV1::class)->only(['index','show', 'store']);

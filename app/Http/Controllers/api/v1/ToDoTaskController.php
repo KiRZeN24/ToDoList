@@ -22,7 +22,14 @@ class ToDoTaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validarDatos = $request->validate([
+            'texto' => 'required|string',
+            'status' =>'required|boolean',
+            'user_id' => 'required|integer'
+        ]);
+        $nuevaTarea = Todotask::create($validarDatos);
+        return new todotaskResource($nuevaTarea);
+         
     }
 
     /**
