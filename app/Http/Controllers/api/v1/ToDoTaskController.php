@@ -30,7 +30,7 @@ class ToDoTaskController extends Controller
      */
     public function show(todotask $todotask)
     {
-        //
+        return new todotaskResource($todotask);
     }
 
     /**
