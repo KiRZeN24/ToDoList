@@ -1,1 +1,7 @@
-En este repositorio, voy a crear una API para ver, añadir, modificar y eliminar, tareas de un usuario.
+# En este repositorio, voy a crear una API REST con Laravel, para una aplicación de tareas.
+
+## Software necesario:
+
+- [XAMPP] (https://www.apachefriends.org/es/index.html)
+
+- [Laravel] (https://laravel.com/)
