@@ -54,6 +54,11 @@ class ToDoTaskController extends Controller
      */
     public function show(todotask $todotask)
     {
+
+        if (!$todotask) {
+            return response()->json(['error' => 'La tarea no existe'], 404);
+        }
+
         return new todotaskResource($todotask);
     }
 
