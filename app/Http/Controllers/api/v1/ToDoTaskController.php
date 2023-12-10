@@ -13,9 +13,21 @@ class ToDoTaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $peticion)
     {
-        return todotaskResource::collection(Todotask::latest()->paginate());
+        $peticion->validate([
+            'user_id' => 'required|integer|exists:users,id',
+        ]);
+
+        $userID = $peticion->input('user_id');
+        $usario = User::find($userID);
+        
+        if(!$usario) {
+            return response()->json(['error' => 'El usuario no exite'], 404);
+        }
+
+        $tareas = Todotask::where('user_id', $userID)->latest()->paginate();
+        return todotaskResource::collection($tareas);
     }
 
     /**
