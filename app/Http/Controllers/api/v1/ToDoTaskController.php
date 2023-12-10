@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\todotask;
 use Illuminate\Http\Request;
 use App\Http\Resources\V1\todotaskResource;
+use App\Models\User;
 
 class ToDoTaskController extends Controller
 {
@@ -23,10 +24,14 @@ class ToDoTaskController extends Controller
     public function store(Request $request)
     {
         $validarDatos = $request->validate([
-            'texto' => 'required|string',
-            'status' =>'required|boolean',
-            'user_id' => 'required|integer'
+            'texto' => 'required|string|min:1',
+            'user_id' => ['required', 'integer', function ($attribute, $value, $fail) {
+                if (!User::find($value)) {
+                    $fail("El usuario con el ID $value no existe.");
+                }
+            }],
         ]);
+        $validarDatos['status'] = 0;
         $nuevaTarea = Todotask::create($validarDatos);
         return new todotaskResource($nuevaTarea);
          
