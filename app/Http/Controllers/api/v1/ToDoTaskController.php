@@ -67,7 +67,24 @@ class ToDoTaskController extends Controller
      */
     public function update(Request $request, todotask $todotask)
     {
-        //
+        $request->validate([
+            'texto' => 'required|string|min:1',
+            'status' => 'integer',
+        ]);
+
+        if ($request->filled('user_id')) {
+            $usuarios = User::find($request->input('user_id'));
+            if (!$usuarios) {
+                return response()->json(['error' => 'El usuario no existe'], 404);
+            }
+        }
+
+        $todotask->update([
+            'texto' => $request->input('texto'),
+            'status' => $request->input('status', $todotask->status),
+        ]);
+
+        return new todotaskResource($todotask);
     }
 
     /**
