@@ -92,6 +92,14 @@ class ToDoTaskController extends Controller
      */
     public function destroy(todotask $todotask)
     {
-        //
+        $usuarios = User::find($todotask->user_id);
+
+        if (!$usuarios) {
+            return response()->json(['error' => 'El usuario de la tarea no existe'], 404);
+        }
+
+        $todotask->delete();
+
+        return response()->json(['message' => 'Tarea eliminada exitosamente']);
     }
 }
