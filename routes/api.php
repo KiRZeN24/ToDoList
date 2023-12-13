@@ -20,6 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('v1/users', UserV1::class)->only(['index']);
+Route::apiResource('v1/users', UserV1::class)->only(['index','update']);
 
 Route::apiResource('v1/todotask', todotaskV1::class)->only(['index','show', 'store', 'update', 'destroy']);
