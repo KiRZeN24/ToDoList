@@ -22,6 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('v1/users', UserV1::class)->only(['index', 'store', 'update']);
 
-Route::apiResource('v1/todotask', todotaskV1::class)->only(['index','show', 'store', 'update', 'destroy']);
+Route::apiResource('v1/todotask', todotaskV1::class)->only(['index','show', 'store', 'update', 'destroy'])->middleware('auth:sanctum');
 
 Route::post('login', [App\Http\Controllers\Api\LoginController::class, 'login']);
