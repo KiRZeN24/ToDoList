@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\V1\UserResource;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -22,7 +23,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|min:1',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        $password = Hash::make($request->input('password'));
+
+        $newUser = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => $password,
+        ]);
+
+        return new UserResource($newUser);
     }
 
     /**
