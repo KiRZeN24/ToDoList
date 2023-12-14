@@ -86,8 +86,21 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
-    {
-        //
+    public function destroy(User $targetUser)
+{
+    $adminUserId = 11;
+
+    if (auth()->check()) {
+    
+        if (auth()->user()->id === $adminUserId && auth()->user()->id !== $targetUser->id) {
+            $targetUser->delete();
+
+            return response()->json(['message' => 'Usuario eliminado correctamente']);
+        } else {
+            return response()->json(['error' => 'No tienes permisos para eliminar este usuario'], 403);
+        }
+    } else {
+        return response()->json(['error' => 'No hay usuario autenticado'], 401);
     }
+}
 }

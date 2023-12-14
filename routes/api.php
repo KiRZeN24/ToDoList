@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\v1\UserController as UserV1;
 use App\Http\Controllers\api\v1\ToDoTaskController as todotaskV1;
+use App\Http\Controllers\Api\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,12 +17,14 @@ use App\Http\Controllers\api\v1\ToDoTaskController as todotaskV1;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('login', [LoginController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::apiResource('v1/users', UserV1::class)->only(['index', 'store', 'update', 'destroy']);
+
+    Route::apiResource('v1/todotask', TodoTaskV1::class)->only(['index', 'show', 'store', 'update', 'destroy']);
 });
-
-Route::apiResource('v1/users', UserV1::class)->only(['index', 'store', 'update']);
-
-Route::apiResource('v1/todotask', todotaskV1::class)->only(['index','show', 'store', 'update', 'destroy'])->middleware('auth:sanctum');
-
-Route::post('login', [App\Http\Controllers\Api\LoginController::class, 'login']);
