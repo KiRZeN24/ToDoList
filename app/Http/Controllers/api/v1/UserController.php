@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\Http\Resources\V1\UserResource;
 use Illuminate\Support\Facades\Hash;
 
+
+
+
 class UserController extends Controller
 {
     /**
@@ -88,19 +91,23 @@ class UserController extends Controller
      */
     public function destroy(User $targetUser)
 {
-    $adminUserId = 11;
+        // Verifica si hay un usuario autenticado
+        if (auth()->check()) {
+            // Accede a la propiedad 'id' solo si hay un usuario autenticado
+            if (auth()->user()->id === $targetUser->id || auth()->user()->id === 11) {
+                
+                // Eliminar las tareas asociadas al usuario
+                $targetUser->todotask()->delete();
 
-    if (auth()->check()) {
-    
-        if (auth()->user()->id === $adminUserId && auth()->user()->id !== $targetUser->id) {
-            $targetUser->delete();
+                // Eliminar al propio usuario
+                $targetUser->delete();
 
-            return response()->json(['message' => 'Usuario eliminado correctamente']);
+                return response()->json(['message' => 'Usuario y tareas asociadas eliminadas correctamente']);
+            } else {
+                return response()->json(['error' => 'No tienes permisos para eliminar este usuario'], 403);
+            }
         } else {
-            return response()->json(['error' => 'No tienes permisos para eliminar este usuario'], 403);
+            return response()->json(['error' => 'No hay usuario autenticado'], 401);
         }
-    } else {
-        return response()->json(['error' => 'No hay usuario autenticado'], 401);
-    }
 }
 }
