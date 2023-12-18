@@ -58,13 +58,9 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'string|min:1',
-            'email' => 'email|unique:users, email, ' . $user->id,
-            'password' => 'string|min:6', 
+            'email' => 'email|unique:users,email,' . $user->id,
+            'password' => 'string|min:6',
         ]);
-
-        if (!$user) {
-            return response()->json(['error' => 'El usuario no existe']);
-        }
 
         $userData = [];
 
@@ -80,22 +76,33 @@ class UserController extends Controller
             $userData['password'] = Hash::make($request->input('password'));
         }
 
-        $user->update($userData);
-        
-        return new UserResource($user);
+        if (empty($userData)) {
+            return response()->json(['message' => 'Ningún dato proporcionado para actualizar'], 422);
+        }
 
+        // Realizar la actualización directamente en la instancia del modelo y obtenerla después
+        $user->fill($userData)->save();
+        $updatedUser = $user->fresh();
+
+        // Verificar si el usuario se encontró antes de devolver el recurso
+        if ($updatedUser) {
+            return new UserResource($updatedUser);
+        } else {
+            // Manejar el caso en que no se pueda encontrar el usuario actualizado
+            return response()->json(['message' => 'Usuario no encontrado después de la actualización'], 404);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $targetUser)
-{
+    {
         // Verifica si hay un usuario autenticado
         if (auth()->check()) {
             // Accede a la propiedad 'id' solo si hay un usuario autenticado
             if (auth()->user()->id === $targetUser->id || auth()->user()->id === 11) {
-                
+
                 // Eliminar las tareas asociadas al usuario
                 $targetUser->todotask()->delete();
 
@@ -109,5 +116,5 @@ class UserController extends Controller
         } else {
             return response()->json(['error' => 'No hay usuario autenticado'], 401);
         }
-}
+    }
 }
