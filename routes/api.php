@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\v1\UserController as UserV1;
-use App\Http\Controllers\api\v1\ToDoTaskController as todotaskV1;
+use App\Http\Controllers\api\v1\ToDoTaskController as TodoTaskV1;
 use App\Http\Controllers\Api\LoginController;
 
 /*

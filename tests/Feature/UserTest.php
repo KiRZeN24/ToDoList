@@ -56,7 +56,7 @@ class UserTest extends TestCase
         $this->withoutMiddleware();
 
         // Crear un usuario de ejemplo en la base de datos
-        $user = User::factory()->create();
+        $user = User::create();
 
         // Datos simulados para la actualización del usuario
         $updatedUserData = [
@@ -86,7 +86,7 @@ class UserTest extends TestCase
             'id' => $user->id,
             'name' => $updatedUserData['name'],
             'email' => $updatedUserData['email'],
-            'password' => $updatedUserData['password'] !== false ? $updatedUserData['password'] : $user->password,
+            'password' => hash::make($updatedUserData['password']),
         ]);
 
         // Verificar que la contraseña se actualizó correctamente

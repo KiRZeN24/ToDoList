@@ -20,7 +20,7 @@ class ToDoTaskController extends Controller
         ]);
 
         $userID = $peticion->input('user_id');
-        $usario = User::find($userID);
+        $usario = User::findOrFail($userID);
         
         if(!$usario) {
             return response()->json(['error' => 'El usuario no exite'], 404);

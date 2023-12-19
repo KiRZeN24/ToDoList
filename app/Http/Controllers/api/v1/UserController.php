@@ -7,8 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\V1\UserResource;
 use Illuminate\Support\Facades\Hash;
-
-
+use Illuminate\Support\Facades\Log;
 
 
 class UserController extends Controller
