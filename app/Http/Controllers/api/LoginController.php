@@ -9,14 +9,19 @@ use App\Models\User;
 
 class LoginController extends Controller
 {
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
 
         $this->validateLogin($request);
 
         if (Auth::attempt($request->only('email', 'password'))) {
+            $user = $request->user();
+            $tokenName = 'API Token'; 
+            $token = $user->createToken($tokenName)->plainTextToken;
+        
             return response()->json([
-                'token' => $request->user()->createToken($request->name)->plainTextToken,
-                'message' => 'Exito'
+                'token' => $token,
+                'message' => 'Éxito'
             ]);
         }
 
@@ -25,11 +30,11 @@ class LoginController extends Controller
         ], 401);
     }
 
-    public function validateLogin(Request $request) {
+    public function validateLogin(Request $request)
+    {
         return $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            'name' => 'required'
         ]);
     }
 }
